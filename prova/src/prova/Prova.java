@@ -29,6 +29,8 @@ public class Prova {
 				 	
 			divisore++;
 		}
+		
+		lettore.close();
 		System.out.println();
 	}
 
