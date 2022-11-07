@@ -26,19 +26,23 @@ public class Craps {
 		System.out.print("BENVENUTI AL GIOCO CRAPS!\n");
 		int myPoint = 0; // point if no win or loss on first roll
 		Status gameStatus; // can contain CONTINUE, WON or LOST
-		int bankBalance = 1000;
+		int bankBalance = 0;
 		int wager = 0;
 		boolean play = false;
+		int scelta = -1;
 		
+		
+		System.out.print("Enter 1 to play, 2 to quit: ");
+		int choice = in.nextInt();
+		if(choice == 1)
+			play = true;
+		else
+			play = false;
+		
+		System.out.print("Inserisci importo che vuoi caricare: ");
+		bankBalance = in.nextInt();
 
 		while(true) {
-			
-			System.out.print("Enter 1 to play, 2 to quit: ");
-			int choice = in.nextInt();
-			if(choice == 1)
-				play = true;
-			else
-				play = false;
 			
 			while(play != false) {
 				
@@ -46,7 +50,7 @@ public class Craps {
 				wager = in.nextInt();
 				if(wager > bankBalance) {
 					
-					while(wager <= bankBalance) {
+					while(wager > bankBalance) {
 						System.out.print("Scommessa non valida, riprovare: ");
 						wager = in.nextInt();
 					}
@@ -91,25 +95,47 @@ public class Craps {
 				// display won or lost message
 				if (gameStatus == Status.WON) {
 					System.out.println("Complimenti, hai vinto");
-					bankBalance =+ wager;
+					bankBalance += wager;
 					System.out.printf("Nuovo saldo: %d", bankBalance);
+					if(bankBalance > 2000)
+						System.out.print("\nComplimenti, stai andando forte!\n");
 					play = false;
 				} 
 				else {
 					System.out.println("Player loses");
 					bankBalance -= wager;
 					System.out.printf("Nuovo saldo: %d", bankBalance);
+					if(bankBalance < 200 && bankBalance != 0)
+						System.out.print("\nOcchio a non giocarti tutto maledetto!\n");
 					play = false;
+				}
+				
+				if(bankBalance == 0) {
+					System.out.print("\nMaledizione, ti sei giocato pure lo stipendio!\nVuoi caricare ancora per continuare a giocare? (1 - Si, 2 - No): ");
+					scelta = in.nextInt();
+					if(scelta == 1) {
+						System.out.print("Quanto vuoi caricare?\nInserisci importo: ");
+						int carica = in.nextInt();
+						bankBalance = carica;
+						play = true;
+						continue;
+					}
+					else if(scelta == 2)
+						break;
 				}
 	
 				
 			}// fine secondo while
 			
+			if(scelta == 2)
+				break;
+			
 			System.out.print("\nVuoi giocare ancora? (1 - Si, 2 - No): ");
 			choice = in.nextInt();
 			if(choice == 1)
 				play = true;
-			else {
+			else if(choice == 2){
+				System.out.printf("Hai scaricato €%d", bankBalance);
 				play = false;
 				break;
 			}
